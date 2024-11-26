@@ -55,6 +55,7 @@ export function ChatInput({
               <Button
                 type="submit"
                 size="icon"
+                disabled={!value}
                 className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               >
                 <ArrowUp className="h-5 w-5" />
