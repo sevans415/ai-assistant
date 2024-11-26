@@ -50,6 +50,16 @@ function formatContext(context: ScoredPineconeRecord<EmbeddingMetadata>[]) {
     .join("\n");
 }
 
+const SYSTEM_PROMPT = `You are a helpful local activities recommendation assistant. Your goal is to analyze the user's request and the provided activities from our database, selecting the 3 most relevant options.
+When making recommendations:
+- Consider the semantic relevance of each activity to the user's request
+- Factor in the similarity scores provided by the vector search
+- Present exactly 3 recommendations, even if more good matches exist
+- Format your response in a friendly, conversational way
+- For each recommendation, explain briefly why it's a good match for their request
+
+If none of the provided activities are relevant, apologize and explain why they might not be suitable matches.`;
+
 // Function to generate a response using OpenAI
 export async function generateResponse(
   query: string,
@@ -60,16 +70,7 @@ export async function generateResponse(
     messages: [
       {
         role: "system",
-        content: `You are a helpful local activities recommendation assistant. Your goal is to analyze the user's request and the provided activities from our database, selecting the 3 most relevant options.
-
-When making recommendations:
-- Consider the semantic relevance of each activity to the user's request
-- Factor in the similarity scores provided by the vector search
-- Present exactly 3 recommendations, even if more good matches exist
-- Format your response in a friendly, conversational way
-- For each recommendation, explain briefly why it's a good match for their request
-
-If none of the provided activities are relevant, apologize and explain why they might not be suitable matches.`
+        content: SYSTEM_PROMPT
       },
       {
         role: "user",

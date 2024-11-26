@@ -21,7 +21,6 @@ export const volunteerOptions = [
 export const wellnessOptions = [
   "Hikes",
   "Walk",
-  "Museums",
   "History Museum",
   "Science Museum",
   "Art Museum"

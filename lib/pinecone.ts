@@ -1,4 +1,4 @@
-import { Pinecone } from "@pinecone-database/pinecone";
+import { Pinecone, RecordMetadata } from "@pinecone-database/pinecone";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,7 +13,7 @@ const index = pc.index(PINECONE_INDEX_NAME);
 export type EmbeddingRecord = {
   id: string;
   values: number[];
-  metadata: Record<string, string | number | boolean | string[]>;
+  metadata: RecordMetadata;
 };
 
 /**
