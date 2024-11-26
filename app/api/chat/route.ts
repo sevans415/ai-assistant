@@ -6,6 +6,8 @@ export type ChatRequest = {
   options: string[];
 };
 
+export const maxDuration = 60; // This sets the maximum duration to
+
 export async function POST(request: Request) {
   try {
     const { query: queryString, options } =
