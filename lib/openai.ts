@@ -65,6 +65,7 @@ export async function generateResponse(
   query: string,
   context: ScoredPineconeRecord<EmbeddingMetadata>[]
 ) {
+  const startTime = Date.now();
   const response = await openai.chat.completions.create({
     model: "gpt-4-turbo-preview", // Updated to latest model
     messages: [
@@ -82,6 +83,7 @@ ${formatContext(context)}`
     ]
   });
 
+  console.log(`OpenAI API call completed in ${Date.now() - startTime}ms`);
   console.log("bot response", JSON.stringify(response, null, 2));
   return response.choices[0].message.content;
 }

@@ -6,26 +6,27 @@ import { queryPinecone } from "./pinecone";
 // Main function to process a query
 export async function processQuery(query: string) {
   try {
-    console.log(`processing query: ${query}`);
-    const queryEmbedding = await getEmbeddings(query);
-    console.log("got embeddings");
+    console.log(`Processing query: ${query}`);
+    const startTime = Date.now();
 
-    // Get relevant documents from Pinecone
+    const queryEmbedding = await getEmbeddings(query);
+    console.log(`Embeddings generated in ${Date.now() - startTime}ms`);
+
     const relevantDocs = (await queryPinecone(
       queryEmbedding
     )) as ScoredPineconeRecord<EmbeddingMetadata>[];
+    console.log(`Pinecone query completed in ${Date.now() - startTime}ms`);
+    console.log(`Found ${relevantDocs.length} relevant documents`);
 
-    console.log("got relevant docs from pinecone");
-
-    // Generate a response using OpenAI
     const response = await generateResponse(query, relevantDocs);
-    console.log("got response from LLM");
-
-    // console.log("response", response);
+    console.log(`Total processing time: ${Date.now() - startTime}ms`);
 
     return response;
   } catch (error) {
     console.error("Error processing query:", error);
+    if (error instanceof Error && error.message.includes("timeout")) {
+      return "Sorry, the request timed out. Please try again or try a simpler query.";
+    }
     return "Sorry, I encountered an error while processing your query.";
   }
 }
