@@ -2,7 +2,7 @@
  * These are drawn from the activities_activitytype table in the database
  * I've excluded activities that involve restaurants, breweries, wineries, etc.
  */
-const wellnessActivityTypes = [
+export const wellnessActivityTypes = [
   { id: 13, name: "Hikes" },
   { id: 120, name: "Walk" },
   { id: 21, name: "Museums" },
@@ -12,7 +12,7 @@ const wellnessActivityTypes = [
   { id: 231, name: "Art Museum" }
 ];
 
-const allActivityTypes = [
+export const allActivityTypes = [
   { id: 1, name: "Bike Trails" },
   { id: 2, name: "Indoor Activities" },
   { id: 4, name: "Playground" },

@@ -13,7 +13,7 @@ const index = pc.index(PINECONE_INDEX_NAME);
 export type EmbeddingRecord = {
   id: string;
   values: number[];
-  metadata: Record<string, any>;
+  metadata: Record<string, string | number | boolean | string[]>;
 };
 
 /**
