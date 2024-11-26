@@ -67,7 +67,7 @@ export async function generateResponse(
 ) {
   const startTime = Date.now();
   const response = await openai.chat.completions.create({
-    model: "gpt-4-turbo-preview", // Updated to latest model
+    model: "gpt-4o", // Updated to latest model
     messages: [
       {
         role: "system",
