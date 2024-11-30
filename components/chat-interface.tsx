@@ -6,14 +6,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { MessageItem } from "@/components/chat/message-item";
 import { ChatInput } from "@/components/chat/chat-input";
-import PillActionButtons, {
-  PillActionType
-} from "@/components/chat/pill-action-buttons";
+import PillActionButtons from "@/components/chat/pill-action-buttons";
 import { Header } from "@/components/chat/header";
-import { volunteerBotMessage, wellnessBotMessage } from "./constants";
+import {
+  coachBotMessage,
+  homepageWelcome,
+  OptionPackageType,
+  volunteerBotMessage,
+  wellnessBotMessage
+} from "./constants";
 import { ChatRequest, ChatResponse200 } from "@/app/api/chat/route";
 import { useOptionPackage } from "@/hooks/useOptionPackage";
-import { ClientChatHistory } from "@/lib/chatbot";
+import { ClientChatHistory } from "@/lib/activityChatbot";
 import { OptionsGrid } from "./chat/options-grid";
 
 export default function ChatInterface() {
@@ -23,6 +27,7 @@ export default function ChatInterface() {
     handleOptionClick,
     selectedOptions,
     setSelectedOptions,
+    optionPackageType,
     optionPackage,
     clearOptions,
     groupSize,
@@ -48,7 +53,7 @@ export default function ChatInterface() {
       ...messages,
       { content: volunteerBotMessage, role: "assistant" }
     ]);
-    handleOptionClick("volunteer");
+    handleOptionClick("giveback");
   };
 
   const handleWellnessClick = () => {
@@ -68,15 +73,15 @@ export default function ChatInterface() {
     setMessages([
       ...messages,
       {
-        content: "What would you like coaching on for your 1:1?",
+        content: coachBotMessage,
         role: "assistant"
       }
     ]);
     handleOptionClick("coach");
   };
 
-  const handlePillClick = (type: PillActionType) => {
-    if (type === "volunteer") {
+  const handlePillClick = (type: OptionPackageType) => {
+    if (type === "giveback") {
       handleVolunteerClick();
     } else if (type === "wellness") {
       handleWellnessClick();
@@ -99,6 +104,7 @@ export default function ChatInterface() {
           query:
             inputValue.trim() +
             (selectedOptions.length > 0 ? getQueryAddendum() : ""),
+          feature: optionPackageType ?? "giveback",
           chatHistory: messages.map(msg => ({
             role: msg.role,
             content:
@@ -177,6 +183,9 @@ export default function ChatInterface() {
               className="w-full mb-8"
             />
             <PillActionButtons onClick={handlePillClick} />
+            <p className="text-white mb-8 text-center whitespace-pre-wrap">
+              {homepageWelcome}
+            </p>
           </div>
         )}
 
@@ -192,17 +201,15 @@ export default function ChatInterface() {
                 <MessageItem key={index} message={message}>
                   {message.role === "assistant" &&
                     index === messages.length - 1 &&
-                    optionPackage?.title !== undefined && (
+                    optionPackage?.optionsTitle !== undefined && (
                       <OptionsGrid
                         selectedOptions={selectedOptions}
                         onOptionsChange={setSelectedOptions}
-                        optionsTitle={optionPackage?.title}
-                        options={optionPackage?.options}
+                        optionPackage={optionPackage}
                         groupSize={groupSize}
                         setGroupSize={setGroupSize}
                         selectedLocationOptions={selectedLocationOptions}
                         setSelectedLocationOptions={setSelectedLocationOptions}
-                        locationOptions={optionPackage?.locationOptions}
                       />
                     )}
                 </MessageItem>

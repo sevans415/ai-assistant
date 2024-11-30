@@ -52,15 +52,17 @@ const volunteerSelectedLocationOptions = [
 ];
 
 const volunteerOptionsPackage = {
-  title: volunteerOptionsTitle,
+  optionsTitle: volunteerOptionsTitle,
   locationOptions: volunteerLocationOptions,
   options: volunteerOptions,
   selectedLocations: volunteerSelectedLocationOptions,
-  selected: volunteerSelectedOptions
+  selected: volunteerSelectedOptions,
+  displayConfig: {
+    groupSize: true,
+    options: true,
+    location: true
+  }
 };
-
-const wellnessOptionsTitle =
-  "Please select the wellness activities you're interested in:";
 
 const wellnessSelectedOptions = [
   "History Museum",
@@ -81,17 +83,54 @@ const wellnessSelectedLocationOptions = [
 ];
 
 const wellnessOptionsPackage = {
-  title: wellnessOptionsTitle,
+  optionsTitle: "Please select the wellness activities you're interested in:",
   options: wellnessOptions,
   locationOptions: wellnessLocationOptions,
   selectedLocations: wellnessSelectedLocationOptions,
-  selected: wellnessSelectedOptions
+  selected: wellnessSelectedOptions,
+  displayConfig: {
+    groupSize: true,
+    options: true,
+    location: true
+  }
 };
 
-export const optionsPackageMap = {
-  volunteer: volunteerOptionsPackage,
+export const coachBotMessage = `Great, Spencer! I'd love to help you prep for a 1:1. Let me know the details of your 1:1 below, if there is anything in particular you'd like help with let me know in the text box below.`;
+
+const coachOptions = ["Jessie", "Tiffany", "Kyle", "Sarah", "Tara", "Kelsey"];
+
+const coachOptionsPackage = {
+  optionsTitle: "Who are you meeting with?",
+  options: coachOptions,
+  selected: [coachOptions[1]],
+  locationOptions: ["Zoom", "In person"],
+  selectedLocations: ["Zoom"],
+  displayConfig: {
+    groupSize: false,
+    options: true,
+    location: true
+  }
+};
+
+export type OptionPackage = {
+  optionsTitle: string;
+  options: string[];
+  selected: string[];
+  locationOptions: string[];
+  selectedLocations: string[];
+  displayConfig: {
+    groupSize: boolean;
+    options: boolean;
+    location: boolean;
+  };
+};
+
+export type OptionPackageType = "giveback" | "wellness" | "coach";
+
+export const optionsPackageMap: Record<OptionPackageType, OptionPackage> = {
+  giveback: volunteerOptionsPackage,
   wellness: wellnessOptionsPackage,
-  coach: wellnessOptionsPackage
+  coach: coachOptionsPackage
 };
 
 export const wellnessBotMessage = `Great, Spencer! Let's find some wellness activities.
@@ -99,3 +138,6 @@ export const wellnessBotMessage = `Great, Spencer! Let's find some wellness acti
 The team has been doing a lot of hikes lately, should we switch it up and try a musuem this time? Jessie mentioned in her last engagement survey that that would be fun.
 
 I've pre-selected the categories I think you might like, but of course change them as you see fit.`;
+
+export const homepageWelcome = `Welcome to your Happyly team building assistant, we are here to help you plan a giveback or wellness activity with your team to bring people together. \n\nHappyly recommendations are curated by human teams and delivered here through our AI assistant. They are designed to support mental health, physical health, team connection, and to positively impact the world - all of which is also good for business. If at any point you would like to talk with a human, please know that we are here for you and eager to make the process as easy as possible. 
+`;

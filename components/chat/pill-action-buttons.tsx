@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-
-export type PillActionType = "volunteer" | "wellness" | "coach";
+import { OptionPackageType } from "../constants";
 
 interface PillActionButtonsProps {
-  onClick: (type: PillActionType) => void;
+  onClick: (type: OptionPackageType) => void;
 }
 
 export default function PillActionButtons({ onClick }: PillActionButtonsProps) {
@@ -12,7 +11,7 @@ export default function PillActionButtons({ onClick }: PillActionButtonsProps) {
       <Button
         variant="outline"
         className="rounded-full bg-transparent text-zinc-300 border-zinc-700 hover:bg-zinc-800 hover:text-white"
-        onClick={() => onClick("volunteer")}
+        onClick={() => onClick("giveback")}
       >
         Volunteer with your team
       </Button>

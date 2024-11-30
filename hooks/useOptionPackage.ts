@@ -1,15 +1,15 @@
-import { optionsPackageMap } from "@/components/constants";
+import { OptionPackage, optionsPackageMap } from "@/components/constants";
 import { useState } from "react";
 
-type OptionPackage = "volunteer" | "wellness" | "coach";
+export type OptionPackageType = "giveback" | "wellness" | "coach";
 
 const MY_LOCATION = "Washington DC";
 
 export function useOptionPackage() {
-  const [optionPackageType, setOptionPackageType] = useState<OptionPackage>();
+  const [optionPackageType, setOptionPackageType] =
+    useState<OptionPackageType>();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [optionPackage, setOptionPackage] =
-    useState<(typeof optionsPackageMap)[OptionPackage]>();
+  const [optionPackage, setOptionPackage] = useState<OptionPackage>();
   const [groupSize, setGroupSize] = useState(5);
   const [selectedLocationOptions, setSelectedLocationOptions] = useState<
     string[]
@@ -22,7 +22,7 @@ export function useOptionPackage() {
     setSelectedLocationOptions([]);
   };
 
-  const handleOptionClick = (option: OptionPackage) => {
+  const handleOptionClick = (option: OptionPackageType) => {
     setOptionPackageType(option);
     setSelectedOptions(optionsPackageMap[option].selected);
     setOptionPackage(optionsPackageMap[option]);

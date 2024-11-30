@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ActivitiesResults } from "@/lib/chatbot";
+import { ActivitiesResults } from "@/lib/activityChatbot";
 
 export default function ActivitiesResult({
   activities

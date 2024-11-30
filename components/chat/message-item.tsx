@@ -1,4 +1,4 @@
-import { ClientChatHistory } from "@/lib/chatbot";
+import { ClientChatHistory } from "@/lib/activityChatbot";
 import ActivitiesResult from "./activity-results";
 
 interface MessageItemProps {
