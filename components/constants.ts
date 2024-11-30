@@ -26,13 +26,9 @@ export const wellnessOptions = [
   "Art Museum"
 ];
 
-export const volunteerBotMessage = `Nice, Spencer! Bringing your team together to volunteer is a great idea. 
+export const volunteerBotMessage = `Hello Spencer! Thank you for your interest in volunteering with your team, this is a great way to build trust and connection and make an impact together! 
 
-To recap the feedback from your team recently, everyone really enjoyed the trip to the soup kitchen 3 weeks ago but the online activity around autism awareness was less engaging. Katie, Dominic, and Adrian also mentioned they wanted to go to the soup kitchen but couldn't because it conflicted with daycare pickup. 
-
-Also, Deloitte is celebrating X awareness month in December, so it might be nice to pick something with that theme. 
-
-I've pre-selected the categories I think you might like, but of course change them as you see fit.`;
+I've pre-selected the categories I think you might like, but of course change them as you see fit. You can also tell me more about what you'd like in the text box below.`;
 
 const volunteerOptionsTitle =
   "Please select the volunteer opportunities you're interested in:";
@@ -43,9 +39,23 @@ const volunteerSelectedOptions = [
   "Community Building"
 ];
 
+const volunteerLocationOptions = [
+  "Giveback From Anywhere",
+  "In person offsite",
+  "Pause for Purpose"
+];
+
+const volunteerSelectedLocationOptions = [
+  "Giveback From Anywhere",
+  "In person offsite",
+  "Pause for Purpose"
+];
+
 const volunteerOptionsPackage = {
   title: volunteerOptionsTitle,
+  locationOptions: volunteerLocationOptions,
   options: volunteerOptions,
+  selectedLocations: volunteerSelectedLocationOptions,
   selected: volunteerSelectedOptions
 };
 
@@ -58,9 +68,23 @@ const wellnessSelectedOptions = [
   "Art Museum"
 ];
 
+const wellnessLocationOptions = [
+  "Remote friendly",
+  "In person in office",
+  "In person offsite"
+];
+
+const wellnessSelectedLocationOptions = [
+  "Remote friendly",
+  "In person in office",
+  "In person offsite"
+];
+
 const wellnessOptionsPackage = {
   title: wellnessOptionsTitle,
   options: wellnessOptions,
+  locationOptions: wellnessLocationOptions,
+  selectedLocations: wellnessSelectedLocationOptions,
   selected: wellnessSelectedOptions
 };
 

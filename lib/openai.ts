@@ -1,11 +1,11 @@
 import { OpenAI } from "openai";
 import dotenv from "dotenv";
 import { ScoredPineconeRecord } from "@pinecone-database/pinecone";
-import { EmbeddingMetadata } from "./createEmbeddings";
+import { EmbeddingMetadata } from "./createWellnessEmbeddings";
 
 dotenv.config();
 
-const openai = new OpenAI({
+export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
@@ -67,7 +67,7 @@ export async function generateResponse(
 ) {
   const startTime = Date.now();
   const response = await openai.chat.completions.create({
-    model: "gpt-4o", // Updated to latest model
+    model: "gpt-4o",
     messages: [
       {
         role: "system",

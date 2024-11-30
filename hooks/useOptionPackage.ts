@@ -3,27 +3,47 @@ import { useState } from "react";
 
 type OptionPackage = "volunteer" | "wellness" | "coach";
 
+const MY_LOCATION = "Washington DC";
+
 export function useOptionPackage() {
   const [optionPackageType, setOptionPackageType] = useState<OptionPackage>();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [optionPackage, setOptionPackage] =
     useState<(typeof optionsPackageMap)[OptionPackage]>();
-
-  const handleOptionClick = (option?: OptionPackage) => {
-    if (option) {
-      setOptionPackageType(option);
-      setSelectedOptions(optionsPackageMap[option].selected);
-      setOptionPackage(optionsPackageMap[option]);
-    } else {
-      setSelectedOptions([]);
-      setOptionPackage(undefined);
-    }
-  };
+  const [groupSize, setGroupSize] = useState(5);
+  const [selectedLocationOptions, setSelectedLocationOptions] = useState<
+    string[]
+  >([]);
 
   const clearOptions = () => {
     setOptionPackageType(undefined);
     setSelectedOptions([]);
     setOptionPackage(undefined);
+    setSelectedLocationOptions([]);
+  };
+
+  const handleOptionClick = (option: OptionPackage) => {
+    setOptionPackageType(option);
+    setSelectedOptions(optionsPackageMap[option].selected);
+    setOptionPackage(optionsPackageMap[option]);
+    setSelectedLocationOptions(optionsPackageMap[option].selectedLocations);
+  };
+
+  const getQueryAddendum = () => {
+    let addendum = `For group size, I expect ${groupSize} people
+    \n For my physical location, I'm in ${MY_LOCATION}`;
+    if (selectedLocationOptions.length > 0) {
+      addendum += `\nFor locations for the activities, I'm interested in ${selectedLocationOptions.join(
+        ", "
+      )}`;
+    }
+    if (selectedOptions.length > 0) {
+      addendum += `\nFor activities, I'm interested in ${selectedOptions.join(
+        ", "
+      )}`;
+    }
+
+    return addendum;
   };
 
   return {
@@ -32,6 +52,11 @@ export function useOptionPackage() {
     selectedOptions,
     setSelectedOptions,
     clearOptions,
-    optionPackage
+    optionPackage,
+    groupSize,
+    setGroupSize,
+    selectedLocationOptions,
+    setSelectedLocationOptions,
+    getQueryAddendum
   };
 }

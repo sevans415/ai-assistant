@@ -11,20 +11,24 @@ import PillActionButtons, {
 } from "@/components/chat/pill-action-buttons";
 import { Header } from "@/components/chat/header";
 import { volunteerBotMessage, wellnessBotMessage } from "./constants";
-import { ChatRequest } from "@/app/api/chat/route";
+import { ChatRequest, ChatResponse200 } from "@/app/api/chat/route";
 import { useOptionPackage } from "@/hooks/useOptionPackage";
+import { ClientChatHistory } from "@/lib/chatbot";
+import { OptionsGrid } from "./chat/options-grid";
 
 export default function ChatInterface() {
-  const [messages, setMessages] = useState<
-    Array<{ text: string; isBot: boolean }>
-  >([]);
+  const [messages, setMessages] = useState<ClientChatHistory[]>([]);
   const {
-    optionPackageType,
+    getQueryAddendum,
     handleOptionClick,
     selectedOptions,
     setSelectedOptions,
     optionPackage,
-    clearOptions
+    clearOptions,
+    groupSize,
+    setGroupSize,
+    selectedLocationOptions,
+    setSelectedLocationOptions
   } = useOptionPackage();
   const [inputValue, setInputValue] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -40,7 +44,10 @@ export default function ChatInterface() {
   const handleVolunteerClick = () => {
     setIsExpanded(true);
 
-    setMessages([...messages, { text: volunteerBotMessage, isBot: true }]);
+    setMessages([
+      ...messages,
+      { content: volunteerBotMessage, role: "assistant" }
+    ]);
     handleOptionClick("volunteer");
   };
 
@@ -49,8 +56,8 @@ export default function ChatInterface() {
     setMessages([
       ...messages,
       {
-        text: wellnessBotMessage,
-        isBot: true
+        content: wellnessBotMessage,
+        role: "assistant"
       }
     ]);
     handleOptionClick("wellness");
@@ -60,7 +67,10 @@ export default function ChatInterface() {
     setIsExpanded(true);
     setMessages([
       ...messages,
-      { text: "What would you like coaching on for your 1:1?", isBot: true }
+      {
+        content: "What would you like coaching on for your 1:1?",
+        role: "assistant"
+      }
     ]);
     handleOptionClick("coach");
   };
@@ -81,13 +91,23 @@ export default function ChatInterface() {
       setInputValue("");
       setIsExpanded(true);
       clearOptions();
-      setMessages([...messages, { text: inputValue, isBot: false }]);
+      setMessages([...messages, { content: inputValue, role: "user" }]);
       setIsLoading(true);
 
       try {
         const body: ChatRequest = {
-          query: inputValue.trim(),
-          options: selectedOptions
+          query:
+            inputValue.trim() +
+            (selectedOptions.length > 0 ? getQueryAddendum() : ""),
+          chatHistory: messages.map(msg => ({
+            role: msg.role,
+            content:
+              msg.content +
+              (msg.role === "assistant" && msg.activityResults
+                ? "\n\n search results from searchActivities tool call:" +
+                  JSON.stringify(msg.activityResults)
+                : "")
+          }))
         };
 
         const response = await fetch("/api/chat", {
@@ -102,16 +122,24 @@ export default function ChatInterface() {
           throw new Error("Failed to get response from chatbot");
         }
 
-        const data = await response.json();
+        const data = (await response.json()) as ChatResponse200;
 
-        setMessages(prev => [...prev, { text: data.response, isBot: true }]);
+        setMessages(prev => [
+          ...prev,
+          {
+            content: data.response,
+            role: "assistant",
+            activityResults: data.activitiesResult
+          }
+        ]);
       } catch (error) {
         console.error("Error processing query:", error);
         setMessages(prev => [
           ...prev,
           {
-            text: "Sorry, I encountered an error while processing your request.",
-            isBot: true
+            content:
+              "Sorry, I encountered an error while processing your request.",
+            role: "assistant"
           }
         ]);
       } finally {
@@ -123,7 +151,7 @@ export default function ChatInterface() {
   const handleReset = () => {
     setIsExpanded(false);
     setMessages([]);
-    handleOptionClick();
+    clearOptions();
     setInputValue("");
   };
 
@@ -161,16 +189,23 @@ export default function ChatInterface() {
           <ScrollArea className="flex-1" ref={scrollAreaRef}>
             <div className="space-y-4 mb-4">
               {messages.map((message, index) => (
-                <MessageItem
-                  key={index}
-                  message={message}
-                  isLatest={index === messages.length - 1}
-                  selectedOptions={selectedOptions}
-                  onOptionsChange={setSelectedOptions}
-                  displayOptions={optionPackageType !== undefined}
-                  optionsTitle={optionPackage?.title}
-                  options={optionPackage?.options}
-                />
+                <MessageItem key={index} message={message}>
+                  {message.role === "assistant" &&
+                    index === messages.length - 1 &&
+                    optionPackage?.title !== undefined && (
+                      <OptionsGrid
+                        selectedOptions={selectedOptions}
+                        onOptionsChange={setSelectedOptions}
+                        optionsTitle={optionPackage?.title}
+                        options={optionPackage?.options}
+                        groupSize={groupSize}
+                        setGroupSize={setGroupSize}
+                        selectedLocationOptions={selectedLocationOptions}
+                        setSelectedLocationOptions={setSelectedLocationOptions}
+                        locationOptions={optionPackage?.locationOptions}
+                      />
+                    )}
+                </MessageItem>
               ))}
               {isLoading && (
                 <div className="flex items-center space-x-1 animate-fade-in p-2">

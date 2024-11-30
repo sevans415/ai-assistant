@@ -54,15 +54,13 @@ export async function upsertEmbeddings(values: EmbeddingRecord[]) {
 // Function to query Pinecone and get relevant documents
 export async function queryPinecone(
   queryEmbedding: number[],
-  topK: number = 5
+  topK: number = 3
 ) {
   const queryResponse = await index.query({
     vector: queryEmbedding,
     topK,
     includeMetadata: true
   });
-
-  console.log("pinecone response", queryResponse);
 
   return queryResponse.matches;
 }
