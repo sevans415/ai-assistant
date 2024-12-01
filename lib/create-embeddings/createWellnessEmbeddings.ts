@@ -1,9 +1,9 @@
-import { JSDOM } from "jsdom";
 import Papa from "papaparse";
 import * as fs from "fs";
-import { getBatchEmbeddings } from "./openai";
-import { upsertEmbeddings } from "./pinecone";
+import { getBatchEmbeddings } from "@/lib/openai";
+import { upsertEmbeddings, PINECONE_WELLNESS_INDEX } from "@/lib/pinecone";
 import { RecordMetadata } from "@pinecone-database/pinecone";
+import { extractParagraphsFromHTMLString } from "./helpers";
 
 interface WellnessActivity {
   id: string;
@@ -44,26 +44,10 @@ function loadWellnessActivities(filePath: string): WellnessActivity[] {
   }
 }
 
-function extractParagraphs(html: string): string[] {
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
-
-  const paragraphs = Array.from(doc.querySelectorAll("p"));
-
-  // Decode HTML entities and extract text content
-  const decodeHtmlEntities = (str: string): string => {
-    const textarea = doc.createElement("textarea");
-    textarea.innerHTML = str;
-    return textarea.value;
-  };
-
-  return paragraphs.map(p => decodeHtmlEntities(p.textContent || ""));
-}
-
 function cleanActivity(activity: WellnessActivity): WellnessActivity {
   return {
     ...activity,
-    content: extractParagraphs(activity.content).join("\n")
+    content: extractParagraphsFromHTMLString(activity.content).join("\n")
   };
 }
 
@@ -126,7 +110,7 @@ async function main() {
     metadata: buildEmbeddingMetadata(activity, formattedActivities[i])
   }));
 
-  await upsertEmbeddings(embeddingsToUpsert);
+  await upsertEmbeddings(embeddingsToUpsert, PINECONE_WELLNESS_INDEX);
 
   console.log(`Done! Upserted ${embeddingsToUpsert.length} embeddings`);
 }

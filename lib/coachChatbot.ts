@@ -1,5 +1,5 @@
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
-import { openai } from "./openai";
+import { openai } from "./openai/openai";
 
 const SYSTEM_PROMPT = `You are an experienced career coach specializing in helping professionals prepare for one-on-one meetings at work. Your goal is to help users have more effective 1:1s with their managers or direct reports.
 

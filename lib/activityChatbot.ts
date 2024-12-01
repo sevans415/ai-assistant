@@ -4,7 +4,7 @@ import {
 } from "openai/resources/index.mjs";
 import { ScoredPineconeRecord } from "@pinecone-database/pinecone";
 import { EmbeddingMetadata } from "./createWellnessEmbeddings";
-import { openai, getEmbeddings } from "./openai";
+import { openai, getEmbeddings } from "./openai/openai";
 import { queryPinecone } from "./pinecone";
 
 function formatContext(context: ScoredPineconeRecord<EmbeddingMetadata>[]) {

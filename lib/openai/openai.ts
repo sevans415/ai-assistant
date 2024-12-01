@@ -1,7 +1,9 @@
 import { OpenAI } from "openai";
 import dotenv from "dotenv";
-import { ScoredPineconeRecord } from "@pinecone-database/pinecone";
-import { EmbeddingMetadata } from "./createWellnessEmbeddings";
+import {
+  RecordMetadata,
+  ScoredPineconeRecord
+} from "@pinecone-database/pinecone";
 
 dotenv.config();
 
@@ -41,7 +43,11 @@ export async function getEmbeddings(input: string): Promise<number[]> {
   return response.data[0].embedding;
 }
 
-function formatContext(context: ScoredPineconeRecord<EmbeddingMetadata>[]) {
+type MinimumMetadata = RecordMetadata & {
+  text: string;
+};
+
+function formatContext(context: ScoredPineconeRecord<MinimumMetadata>[]) {
   return context
     .map(
       (activity, i) =>
@@ -63,7 +69,7 @@ If none of the provided activities are relevant, apologize and explain why they 
 // Function to generate a response using OpenAI
 export async function generateResponse(
   query: string,
-  context: ScoredPineconeRecord<EmbeddingMetadata>[]
+  context: ScoredPineconeRecord<MinimumMetadata>[]
 ) {
   const startTime = Date.now();
   const response = await openai.chat.completions.create({

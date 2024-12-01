@@ -7,8 +7,8 @@ dotenv.config();
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
 
 // Target the index where you'll store the vector embeddings
-const PINECONE_INDEX_NAME = "happyly-wellness-activities";
-const index = pc.index(PINECONE_INDEX_NAME);
+export const PINECONE_WELLNESS_INDEX = "happyly-wellness-activities";
+export const PINECONE_GIVEBACKS_INDEX = "happyly-giveback-activities";
 
 export type EmbeddingRecord = {
   id: string;
@@ -35,7 +35,11 @@ function batchSplit<T>(items: T[], batchSize: number): T[][] {
   );
 }
 
-export async function upsertEmbeddings(values: EmbeddingRecord[]) {
+export async function upsertEmbeddings(
+  values: EmbeddingRecord[],
+  indexName: typeof PINECONE_WELLNESS_INDEX | typeof PINECONE_GIVEBACKS_INDEX
+) {
+  const index = pc.index(indexName);
   const batches = batchSplit(values, 230);
 
   for (let i = 0; i < batches.length; i++) {
@@ -54,8 +58,10 @@ export async function upsertEmbeddings(values: EmbeddingRecord[]) {
 // Function to query Pinecone and get relevant documents
 export async function queryPinecone(
   queryEmbedding: number[],
+  indexName: typeof PINECONE_WELLNESS_INDEX | typeof PINECONE_GIVEBACKS_INDEX,
   topK: number = 3
 ) {
+  const index = pc.index(indexName);
   const queryResponse = await index.query({
     vector: queryEmbedding,
     topK,
