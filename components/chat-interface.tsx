@@ -17,7 +17,7 @@ import {
 } from "./constants";
 import { ChatRequest, ChatResponse200 } from "@/app/api/chat/route";
 import { useOptionPackage } from "@/hooks/useOptionPackage";
-import { ClientChatHistory } from "@/lib/activityChatbot";
+import { ClientChatHistory } from "@/lib/openai/chatbot";
 import { OptionsGrid } from "./chat/options-grid";
 
 export default function ChatInterface() {
@@ -109,9 +109,9 @@ export default function ChatInterface() {
             role: msg.role,
             content:
               msg.content +
-              (msg.role === "assistant" && msg.activityResults
+              (msg.role === "assistant" && msg.wellnessActivities
                 ? "\n\n search results from searchActivities tool call:" +
-                  JSON.stringify(msg.activityResults)
+                  JSON.stringify(msg.wellnessActivities)
                 : "")
           }))
         };
@@ -135,7 +135,7 @@ export default function ChatInterface() {
           {
             content: data.response,
             role: "assistant",
-            activityResults: data.activitiesResult
+            wellnessActivities: data.wellnessActivities
           }
         ]);
       } catch (error) {

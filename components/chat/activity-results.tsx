@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ActivitiesResults } from "@/lib/activityChatbot";
+import { WellnessActivities } from "@/lib/wellnessChatbot";
 
 export default function ActivitiesResult({
   activities
 }: {
-  activities: ActivitiesResults;
+  activities: WellnessActivities;
 }) {
   return (
     <div className="">

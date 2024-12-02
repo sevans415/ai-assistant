@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 import * as fs from "fs";
-import { getBatchEmbeddings } from "@/lib/openai";
+import { getBatchEmbeddings } from "@/lib/openai/embeddings";
 import { upsertEmbeddings, PINECONE_WELLNESS_INDEX } from "@/lib/pinecone";
 import { RecordMetadata } from "@pinecone-database/pinecone";
 import { extractParagraphsFromHTMLString } from "./helpers";
@@ -62,7 +62,7 @@ Address: ${activity.address}\n
 Tips: ${activity.tips}`;
 }
 
-export type EmbeddingMetadata = RecordMetadata & {
+export type WellnessEmbeddingMetadata = RecordMetadata & {
   headline: string;
   shortDescription: string;
   content: string;
@@ -76,7 +76,7 @@ export type EmbeddingMetadata = RecordMetadata & {
 function buildEmbeddingMetadata(
   activity: WellnessActivity,
   embeddedText: string
-): EmbeddingMetadata {
+): WellnessEmbeddingMetadata {
   return {
     text: embeddedText,
     headline: activity.headline,

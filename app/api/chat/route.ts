@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import {
-  ActivitiesResults,
-  ClientChatHistory,
-  generateResponse
-} from "@/lib/activityChatbot";
+import { ClientChatHistory } from "@/lib/openai/chatbot";
+import wellnessChatbot, { WellnessActivities } from "@/lib/wellnessChatbot";
 import { generateCoachResponse } from "@/lib/coachChatbot";
 import { OptionPackageType } from "@/components/constants";
 
@@ -17,7 +14,7 @@ export const maxDuration = 60; // This sets the maximum duration to
 
 export type ChatResponse200 = {
   response: string;
-  activitiesResult: ActivitiesResults | undefined;
+  wellnessActivities: WellnessActivities | undefined;
 };
 
 export type ChatResponse500 = {
@@ -41,14 +38,14 @@ export async function POST(
         queryString,
         chatHistory
       );
-      return NextResponse.json({ response, activitiesResult: undefined });
+      return NextResponse.json({ response, wellnessActivities: undefined });
+    } else {
+      const { response, wellnessActivities } = await wellnessChatbot(
+        queryString,
+        chatHistory
+      );
+      return NextResponse.json({ response, wellnessActivities });
     }
-
-    const { response, activitiesResult } = await generateResponse(
-      queryString,
-      chatHistory
-    );
-    return NextResponse.json({ response, activitiesResult });
   } catch (error) {
     console.error("Error processing query:", error);
     return NextResponse.json(

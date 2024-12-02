@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { getBatchEmbeddings } from "../openai/openai";
+import { getBatchEmbeddings } from "../openai/embeddings";
 import { PINECONE_GIVEBACKS_INDEX, upsertEmbeddings } from "../pinecone";
 import { RecordMetadata } from "@pinecone-database/pinecone";
 import { extractParagraphsFromHTMLString } from "./helpers";

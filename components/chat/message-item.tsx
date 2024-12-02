@@ -1,4 +1,4 @@
-import { ClientChatHistory } from "@/lib/activityChatbot";
+import { ClientChatHistory } from "@/lib/openai/chatbot";
 import ActivitiesResult from "./activity-results";
 
 interface MessageItemProps {
@@ -20,8 +20,8 @@ export function MessageItem({ message, children }: MessageItemProps) {
           .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
           .replace(/\*\*([^*]+)\*\*/g, "$1")}
       </p>
-      {message.role === "assistant" && message.activityResults && (
-        <ActivitiesResult activities={message.activityResults} />
+      {message.role === "assistant" && message.wellnessActivities && (
+        <ActivitiesResult activities={message.wellnessActivities} />
       )}
       {children}
     </div>
