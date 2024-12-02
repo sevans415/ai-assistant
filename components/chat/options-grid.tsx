@@ -70,7 +70,7 @@ export function OptionsGrid({
           <Input
             className="mb-2 max-w-20"
             type="number"
-            value={groupSize}
+            value={`${groupSize}`}
             onChange={e => setGroupSize(parseInt(e.target.value))}
           />
           <Separator className="my-4" />

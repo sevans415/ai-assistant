@@ -36,9 +36,9 @@ const volunteerOptionsTitle =
   "Please select the volunteer opportunities you're interested in:";
 
 const volunteerSelectedOptions = [
-  "Food Insecurity",
-  "Health and Wellness",
-  "Community Building"
+  "Education and Literacy",
+  "Childhood Hunger",
+  "Childhood Obesity"
 ];
 
 const volunteerLocationOptions = [
