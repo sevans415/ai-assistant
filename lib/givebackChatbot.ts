@@ -3,7 +3,6 @@ import {
   ChatCompletionTool
 } from "openai/resources/index.mjs";
 import { ScoredPineconeRecord } from "@pinecone-database/pinecone";
-import { WellnessEmbeddingMetadata } from "@/lib/create-embeddings/createWellnessEmbeddings";
 import { getEmbeddings } from "./openai/embeddings";
 import { PINECONE_GIVEBACKS_INDEX, queryPinecone } from "./pinecone";
 import { generateResponse, formatContext } from "./openai/chatbot";
