@@ -23,7 +23,10 @@ export function ChatInput({
 }: ChatInputProps) {
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={e => {
+        e.preventDefault();
+        onSubmit(e);
+      }}
       className={cn("relative transition-all duration-500", className)}
     >
       <Card className="bg-zinc-800 border-zinc-700">

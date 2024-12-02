@@ -51,12 +51,14 @@ export async function generateResponse<T>(
   // Keep track of the conversation until we get a final response
   let response;
   while (true) {
+    console.log("calling openai chat completions");
     response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages,
       tools,
       tool_choice: "auto"
     });
+    console.log("openai chat completions complete");
 
     const responseMessage = response.choices[0].message;
 
@@ -92,8 +94,6 @@ export async function generateResponse<T>(
   }
 
   console.log(`OpenAI API call completed in ${Date.now() - startTime}ms`);
-
-  console.log("response", toolCallResult);
 
   return { response: response.choices[0].message.content!, toolCallResult };
 }

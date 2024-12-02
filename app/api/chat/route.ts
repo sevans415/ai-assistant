@@ -9,6 +9,7 @@ export type ChatRequest = {
   query: string;
   chatHistory: ClientChatHistory[];
   feature: OptionPackageType;
+  locationTypes?: string[];
 };
 
 export const maxDuration = 60; // This sets the maximum duration to
@@ -32,9 +33,9 @@ export async function POST(
     const {
       query: queryString,
       chatHistory,
-      feature
+      feature,
+      locationTypes
     } = (await request.json()) as ChatRequest;
-    console.log("POST: ", queryString, feature);
 
     if (feature === "coach") {
       const { response } = await generateCoachResponse(
@@ -45,13 +46,15 @@ export async function POST(
     } else if (feature === "wellness") {
       const { response, wellnessActivities } = await wellnessChatbot(
         queryString,
-        chatHistory
+        chatHistory,
+        locationTypes
       );
       return NextResponse.json({ response, wellnessActivities });
     } else if (feature === "giveback") {
       const { response, givebackActivities } = await givebackChatbot(
         queryString,
-        chatHistory
+        chatHistory,
+        locationTypes
       );
       return NextResponse.json({ response, givebackActivities });
     }

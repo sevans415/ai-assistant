@@ -1,3 +1,5 @@
+import { LocationType } from "@/app/api/chat/route";
+
 export const volunteerOptions = [
   "Education and Literacy",
   "Homelessness",
@@ -44,6 +46,14 @@ const volunteerLocationOptions = [
   "In person offsite",
   "Pause for Purpose"
 ];
+
+export const givebackLocationType: {
+  [key in (typeof volunteerLocationOptions)[number]]: LocationType;
+} = {
+  "Giveback From Anywhere": "Online",
+  "In person offsite": "In-person",
+  "Pause for Purpose": "Online"
+};
 
 const volunteerSelectedLocationOptions = [
   "Giveback From Anywhere",

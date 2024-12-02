@@ -11,7 +11,7 @@ import { generateResponse, formatContext } from "./openai/chatbot";
 const SYSTEM_PROMPT = `You are a helpful local activities recommendation assistant. Your goal is to chat with the user and direct them towards asking for activities. when they ask, analyze the user's request and the provided activities from our database, selecting the 3 most relevant options.
 
 You have access to the following tool:
-- searchActivities(query: string): Searches the vector database for activities matching the query and returns relevant matches with similarity scores.
+- searchActivities(query: string): Searches the vector database for activities matching the query and returns relevant matches with similarity scores. You should only call this once per query.
 
 When making recommendations:
 - Use the searchActivities tool to find relevant activities based on the user's request
@@ -45,9 +45,11 @@ const tools: ChatCompletionTool[] = [
   }
 ];
 
-async function searchActivities(query: string) {
+async function searchActivities(query: string, locationTypes: string[] = []) {
   const embedding = await getEmbeddings(query);
-  const results = await queryPinecone(embedding, PINECONE_WELLNESS_INDEX);
+  const results = await queryPinecone(embedding, PINECONE_WELLNESS_INDEX, {
+    locationTypes
+  });
   return results as ScoredPineconeRecord<WellnessEmbeddingMetadata>[];
 }
 
@@ -56,14 +58,17 @@ export type WellnessActivities =
 
 export default async function wellnessChatbot(
   query: string,
-  chatHistory: ChatCompletionMessageParam[] = []
+  chatHistory: ChatCompletionMessageParam[],
+  locationTypes: string[] = []
 ): Promise<{ response: string; wellnessActivities?: WellnessActivities }> {
+  const searchFn = (query: string) => searchActivities(query, locationTypes);
+
   const { response, toolCallResult } = await generateResponse(
     query,
     chatHistory,
     SYSTEM_PROMPT,
     tools,
-    searchActivities,
+    searchFn,
     formatContext
   );
 

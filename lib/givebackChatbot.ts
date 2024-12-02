@@ -45,9 +45,11 @@ const tools: ChatCompletionTool[] = [
   }
 ];
 
-async function searchActivities(query: string) {
+async function searchActivities(query: string, locationTypes: string[] = []) {
   const embedding = await getEmbeddings(query);
-  const results = await queryPinecone(embedding, PINECONE_GIVEBACKS_INDEX);
+  const results = await queryPinecone(embedding, PINECONE_GIVEBACKS_INDEX, {
+    locationTypes
+  });
   return results as ScoredPineconeRecord<GivebackEmbeddingMetadata>[];
 }
 
@@ -56,14 +58,17 @@ export type GivebackActivities =
 
 export default async function wellnessChatbot(
   query: string,
-  chatHistory: ChatCompletionMessageParam[] = []
+  chatHistory: ChatCompletionMessageParam[] = [],
+  locationTypes: string[] = []
 ): Promise<{ response: string; givebackActivities?: GivebackActivities }> {
+  const searchFn = (query: string) => searchActivities(query, locationTypes);
+
   const { response, toolCallResult } = await generateResponse(
     query,
     chatHistory,
     SYSTEM_PROMPT,
     tools,
-    searchActivities,
+    searchFn,
     formatContext
   );
 

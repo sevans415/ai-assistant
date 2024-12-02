@@ -1,4 +1,8 @@
-import { Pinecone, RecordMetadata } from "@pinecone-database/pinecone";
+import {
+  Pinecone,
+  QueryOptions,
+  RecordMetadata
+} from "@pinecone-database/pinecone";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -59,14 +63,26 @@ export async function upsertEmbeddings(
 export async function queryPinecone(
   queryEmbedding: number[],
   indexName: typeof PINECONE_WELLNESS_INDEX | typeof PINECONE_GIVEBACKS_INDEX,
+  args?: {
+    locationTypes?: string[];
+  },
   topK: number = 3
 ) {
+  console.log("queryPinecone: ", indexName, args);
   const index = pc.index(indexName);
-  const queryResponse = await index.query({
+  const queryArgs: QueryOptions = {
     vector: queryEmbedding,
     topK,
     includeMetadata: true
-  });
+  };
+
+  if (args?.locationTypes && args.locationTypes.length > 0) {
+    queryArgs.filter = {
+      locationType: { $in: args.locationTypes }
+    };
+  }
+
+  const queryResponse = await index.query(queryArgs);
 
   return queryResponse.matches;
 }

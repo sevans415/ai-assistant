@@ -10,6 +10,7 @@ import PillActionButtons from "@/components/chat/pill-action-buttons";
 import { Header } from "@/components/chat/header";
 import {
   coachBotMessage,
+  givebackLocationType,
   homepageWelcome,
   OptionPackageType,
   volunteerBotMessage,
@@ -104,6 +105,9 @@ export default function ChatInterface() {
             userText.trim() +
             (selectedOptions.length > 0 ? getQueryAddendum() : ""),
           feature: optionPackageType ?? "giveback",
+          locationTypes: selectedLocationOptions.map(
+            option => givebackLocationType[option]
+          ),
           chatHistory: messages.map(msg => ({
             role: msg.role,
             content:
@@ -201,6 +205,7 @@ export default function ChatInterface() {
                 <MessageItem key={index} message={message}>
                   {message.role === "assistant" &&
                     index === messages.length - 1 &&
+                    messages.length === 1 &&
                     optionPackage?.optionsTitle !== undefined && (
                       <OptionsGrid
                         selectedOptions={selectedOptions}

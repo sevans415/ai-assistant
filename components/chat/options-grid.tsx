@@ -108,7 +108,10 @@ export function OptionsGrid({
       )}
       <Button
         className="mt-4"
-        onClick={() => handleSubmit("Submitted your options")}
+        onClick={e => {
+          e.preventDefault();
+          handleSubmit("Submitted your options");
+        }}
       >
         Submit
       </Button>
