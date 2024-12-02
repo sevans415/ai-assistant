@@ -5,6 +5,8 @@ import { generateCoachResponse } from "@/lib/coachChatbot";
 import { OptionPackageType } from "@/components/constants";
 import givebackChatbot, { GivebackActivities } from "@/lib/givebackChatbot";
 
+export type LocationType = "Online" | "In-person";
+
 export type ChatRequest = {
   query: string;
   chatHistory: ClientChatHistory[];
