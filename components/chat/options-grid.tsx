@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { OptionPackage } from "../constants";
+import { Button } from "../ui/button";
 
 interface OptionsGridProps {
   selectedOptions: string[];
@@ -11,6 +12,7 @@ interface OptionsGridProps {
   setGroupSize: (size: number) => void;
   selectedLocationOptions: string[];
   setSelectedLocationOptions: (options: string[]) => void;
+  handleSubmit: (userText: string) => void;
 }
 
 export function OptionsGrid({
@@ -20,7 +22,8 @@ export function OptionsGrid({
   setGroupSize,
   selectedLocationOptions,
   setSelectedLocationOptions,
-  optionPackage
+  optionPackage,
+  handleSubmit
 }: OptionsGridProps) {
   const { displayConfig, optionsTitle, options, locationOptions } =
     optionPackage;
@@ -103,6 +106,12 @@ export function OptionsGrid({
           </div>
         </>
       )}
+      <Button
+        className="mt-4"
+        onClick={() => handleSubmit("Submitted your options")}
+      >
+        Submit
+      </Button>
     </div>
   );
 }

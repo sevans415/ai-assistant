@@ -5,10 +5,11 @@ import {
 import { ScoredPineconeRecord } from "@pinecone-database/pinecone";
 import { WellnessEmbeddingMetadata } from "@/lib/create-embeddings/createWellnessEmbeddings";
 import { getEmbeddings } from "./openai/embeddings";
-import { PINECONE_WELLNESS_INDEX, queryPinecone } from "./pinecone";
+import { PINECONE_GIVEBACKS_INDEX, queryPinecone } from "./pinecone";
 import { generateResponse, formatContext } from "./openai/chatbot";
+import { GivebackEmbeddingMetadata } from "./create-embeddings/createGivebackEmbeddings";
 
-const SYSTEM_PROMPT = `You are a helpful local activities recommendation assistant. Your goal is to chat with the user and direct them towards asking for activities. when they ask, analyze the user's request and the provided activities from our database, selecting the 3 most relevant options.
+const SYSTEM_PROMPT = `You are a helpful volunteer activities recommendation assistant to help company managers find volunteer opportunities for their teams. Your goal is to chat with the user and direct them towards asking for activities. when they ask, analyze the user's request and the provided activities from our database, selecting the 3 most relevant options.
 
 You have access to the following tool:
 - searchActivities(query: string): Searches the vector database for activities matching the query and returns relevant matches with similarity scores.
@@ -47,17 +48,17 @@ const tools: ChatCompletionTool[] = [
 
 async function searchActivities(query: string) {
   const embedding = await getEmbeddings(query);
-  const results = await queryPinecone(embedding, PINECONE_WELLNESS_INDEX);
-  return results as ScoredPineconeRecord<WellnessEmbeddingMetadata>[];
+  const results = await queryPinecone(embedding, PINECONE_GIVEBACKS_INDEX);
+  return results as ScoredPineconeRecord<GivebackEmbeddingMetadata>[];
 }
 
-export type WellnessActivities =
-  ScoredPineconeRecord<WellnessEmbeddingMetadata>[];
+export type GivebackActivities =
+  ScoredPineconeRecord<GivebackEmbeddingMetadata>[];
 
 export default async function wellnessChatbot(
   query: string,
   chatHistory: ChatCompletionMessageParam[] = []
-): Promise<{ response: string; wellnessActivities?: WellnessActivities }> {
+): Promise<{ response: string; givebackActivities?: GivebackActivities }> {
   const { response, toolCallResult } = await generateResponse(
     query,
     chatHistory,
@@ -67,5 +68,5 @@ export default async function wellnessChatbot(
     formatContext
   );
 
-  return { response, wellnessActivities: toolCallResult };
+  return { response, givebackActivities: toolCallResult };
 }

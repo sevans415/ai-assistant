@@ -23,6 +23,9 @@ export function MessageItem({ message, children }: MessageItemProps) {
       {message.role === "assistant" && message.wellnessActivities && (
         <ActivitiesResult activities={message.wellnessActivities} />
       )}
+      {message.role === "assistant" && message.givebackActivities && (
+        <ActivitiesResult activities={message.givebackActivities} />
+      )}
       {children}
     </div>
   );

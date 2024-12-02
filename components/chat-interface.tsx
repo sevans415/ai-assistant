@@ -90,19 +90,18 @@ export default function ChatInterface() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (inputValue.trim()) {
+  const handleSubmit = async (userText: string) => {
+    if (userText.trim()) {
       setInputValue("");
       setIsExpanded(true);
       clearOptions();
-      setMessages([...messages, { content: inputValue, role: "user" }]);
+      setMessages([...messages, { content: userText, role: "user" }]);
       setIsLoading(true);
 
       try {
         const body: ChatRequest = {
           query:
-            inputValue.trim() +
+            userText.trim() +
             (selectedOptions.length > 0 ? getQueryAddendum() : ""),
           feature: optionPackageType ?? "giveback",
           chatHistory: messages.map(msg => ({
@@ -135,7 +134,8 @@ export default function ChatInterface() {
           {
             content: data.response,
             role: "assistant",
-            wellnessActivities: data.wellnessActivities
+            wellnessActivities: data.wellnessActivities,
+            givebackActivities: data.givebackActivities
           }
         ]);
       } catch (error) {
@@ -178,7 +178,7 @@ export default function ChatInterface() {
             <ChatInput
               value={inputValue}
               onChange={setInputValue}
-              onSubmit={handleSubmit}
+              onSubmit={() => handleSubmit(inputValue)}
               showSubmitButton={false}
               className="w-full mb-8"
             />
@@ -208,6 +208,7 @@ export default function ChatInterface() {
                         optionPackage={optionPackage}
                         groupSize={groupSize}
                         setGroupSize={setGroupSize}
+                        handleSubmit={handleSubmit}
                         selectedLocationOptions={selectedLocationOptions}
                         setSelectedLocationOptions={setSelectedLocationOptions}
                       />
@@ -229,7 +230,7 @@ export default function ChatInterface() {
           <ChatInput
             value={inputValue}
             onChange={setInputValue}
-            onSubmit={handleSubmit}
+            onSubmit={() => handleSubmit(inputValue)}
             showSubmitButton={true}
           />
         )}

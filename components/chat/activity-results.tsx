@@ -1,11 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { WellnessActivities } from "@/lib/wellnessChatbot";
+import { GivebackActivities } from "@/lib/givebackChatbot";
 
 export default function ActivitiesResult({
   activities
 }: {
-  activities: WellnessActivities;
+  activities: WellnessActivities | GivebackActivities;
 }) {
   return (
     <div className="">
@@ -34,15 +35,17 @@ export default function ActivitiesResult({
           ))}
         </div>
       )}
-      <Link
-        href={`https://www.happyly.com`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-zinc-300 underline block text-center mt-2 flex justify-center items-center"
-      >
-        {`Didn't find what you're looking for? Need help? Click here to connect
-        with our team!`}
-      </Link>
+      <div className="text-zinc-300 block text-center mt-2 flex justify-center items-center">
+        {`Didn't find what you're looking for? Need help? `}
+        <Link
+          href="https://meetings.hubspot.com/caitlin-iseler?uuid=518b07de-3f5a-469c-b7cf-6bf22643553c"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline ml-1"
+        >
+          Click here to connect with our team!
+        </Link>
+      </div>
     </div>
   );
 }

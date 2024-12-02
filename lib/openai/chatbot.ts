@@ -7,6 +7,7 @@ import {
 import { openai } from "./helpers";
 import { RecordMetadata } from "@pinecone-database/pinecone";
 import { WellnessActivities } from "@/lib/wellnessChatbot";
+import { GivebackActivities } from "@/lib/givebackChatbot";
 
 type UserChat = {
   role: "user";
@@ -17,6 +18,7 @@ type AssistantChat = {
   role: "assistant";
   content: string;
   wellnessActivities?: WellnessActivities;
+  givebackActivities?: GivebackActivities;
 };
 
 export type ClientChatHistory = UserChat | AssistantChat;

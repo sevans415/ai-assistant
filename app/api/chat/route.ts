@@ -3,6 +3,7 @@ import { ClientChatHistory } from "@/lib/openai/chatbot";
 import wellnessChatbot, { WellnessActivities } from "@/lib/wellnessChatbot";
 import { generateCoachResponse } from "@/lib/coachChatbot";
 import { OptionPackageType } from "@/components/constants";
+import givebackChatbot, { GivebackActivities } from "@/lib/givebackChatbot";
 
 export type ChatRequest = {
   query: string;
@@ -14,7 +15,8 @@ export const maxDuration = 60; // This sets the maximum duration to
 
 export type ChatResponse200 = {
   response: string;
-  wellnessActivities: WellnessActivities | undefined;
+  wellnessActivities?: WellnessActivities;
+  givebackActivities?: GivebackActivities;
 };
 
 export type ChatResponse500 = {
@@ -32,20 +34,32 @@ export async function POST(
       chatHistory,
       feature
     } = (await request.json()) as ChatRequest;
+    console.log("POST: ", queryString, feature);
 
     if (feature === "coach") {
       const { response } = await generateCoachResponse(
         queryString,
         chatHistory
       );
-      return NextResponse.json({ response, wellnessActivities: undefined });
-    } else {
+      return NextResponse.json({ response });
+    } else if (feature === "wellness") {
       const { response, wellnessActivities } = await wellnessChatbot(
         queryString,
         chatHistory
       );
       return NextResponse.json({ response, wellnessActivities });
+    } else if (feature === "giveback") {
+      const { response, givebackActivities } = await givebackChatbot(
+        queryString,
+        chatHistory
+      );
+      return NextResponse.json({ response, givebackActivities });
     }
+
+    return NextResponse.json(
+      { error: "Invalid feature type" },
+      { status: 400 }
+    );
   } catch (error) {
     console.error("Error processing query:", error);
     return NextResponse.json(
