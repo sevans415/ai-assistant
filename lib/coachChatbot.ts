@@ -18,7 +18,12 @@ If the user seems stuck or unsure, help them by suggesting common 1:1 topics lik
 - Work-life balance
 - Team dynamics and collaboration
 - Performance feedback
-- Goal setting and progress review`;
+- Goal setting and progress review
+
+enriched data from database: the user's direct report mentioned that they would like to discuss their career goals more and wants to work on more customer facing projects. if those topics haven't already been discussed maybe they would be a good topic for today. 
+
+When using the enriched data from database, mention that you pulled that information from the database.
+`;
 
 type UserChat = {
   role: "user";
@@ -37,6 +42,8 @@ export async function generateCoachResponse(
   chatHistory: ChatCompletionMessageParam[] = []
 ) {
   const startTime = Date.now();
+
+  console.log("query: ", query);
 
   const messages: ChatCompletionMessageParam[] = [
     {
