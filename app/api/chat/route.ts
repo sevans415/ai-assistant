@@ -48,8 +48,7 @@ export async function POST(
     } else if (feature === "wellness") {
       const { response, wellnessActivities } = await wellnessChatbot(
         queryString,
-        chatHistory,
-        locationTypes
+        chatHistory
       );
       return NextResponse.json({ response, wellnessActivities });
     } else if (feature === "giveback") {

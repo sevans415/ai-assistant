@@ -105,9 +105,9 @@ export default function ChatInterface() {
             userText.trim() +
             (selectedOptions.length > 0 ? getQueryAddendum() : ""),
           feature: optionPackageType ?? "giveback",
-          locationTypes: selectedLocationOptions.map(
-            option => givebackLocationType[option]
-          ),
+          locationTypes: selectedLocationOptions
+            .map(option => givebackLocationType[option])
+            .filter(option => !!option),
           chatHistory: messages.map(msg => ({
             role: msg.role,
             content:
