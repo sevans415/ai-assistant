@@ -27,7 +27,7 @@ export default function PillActionButtons({ onClick }: PillActionButtonsProps) {
         className="rounded-full bg-transparent text-zinc-300 border-zinc-700 hover:bg-zinc-800 hover:text-white"
         onClick={() => onClick("coach")}
       >
-        Coach me before my 1:1
+        Team building table topics
       </Button>
     </div>
   );
