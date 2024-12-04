@@ -101,7 +101,7 @@ const wellnessOptionsPackage = {
   displayConfig: {
     groupSize: true,
     options: true,
-    location: true
+    location: false
   }
 };
 

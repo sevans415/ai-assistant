@@ -33,13 +33,16 @@ export function useOptionPackage() {
     if (optionPackageType === "coach") {
       return `I'm meeting with ${selectedOptions[0]} and it's a ${selectedLocationOptions[0]} meeting`;
     }
-    let addendum = `For group size, I expect ${groupSize} people
+    let addendum = `\nFor group size, I expect ${groupSize} people
     \n For my physical location, I'm in ${MY_LOCATION}`;
-    if (selectedLocationOptions.length > 0) {
-      addendum += `\nFor locations for the activities, I'm interested in ${selectedLocationOptions.join(
-        ", "
-      )}`;
-    }
+    // if (
+    //   optionPackageType === "giveback" &&
+    //   selectedLocationOptions.length > 0
+    // ) {
+    //   addendum += `\nFor locations for the activities, I'm interested in ${selectedLocationOptions.join(
+    //     ", "
+    //   )}`;
+    // }
     if (selectedOptions.length > 0) {
       addendum += `\nFor activities, I'm interested in ${selectedOptions.join(
         ", "
