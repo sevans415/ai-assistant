@@ -29,11 +29,11 @@ export function ChatInput({
       }}
       className={cn("relative transition-all duration-500", className)}
     >
-      <Card className="bg-zinc-800 border-zinc-700">
+      <Card className="bg-background border-border">
         <div className="flex items-center gap-2 p-2">
           <Input
             placeholder="Message Happyly Assistant"
-            className="bg-transparent border-0 text-white placeholder:text-zinc-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="bg-transparent border-0 shadow-none placeholder:text-zinc-400 focus-visible:ring-0 focus-visible:ring-offset-0"
             value={value}
             onChange={e => onChange(e.target.value)}
           />
@@ -59,7 +59,7 @@ export function ChatInput({
                 type="submit"
                 size="icon"
                 disabled={!value}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                className="bg-primary hover:bg-primary/80 rounded-lg"
               >
                 <ArrowUp className="h-5 w-5" />
               </Button>

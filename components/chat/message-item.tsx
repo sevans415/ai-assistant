@@ -11,8 +11,8 @@ export function MessageItem({ message, children }: MessageItemProps) {
     <div
       className={`p-4 rounded-lg ${
         message.role === "assistant"
-          ? "bg-blue-600 text-white mr-8"
-          : "bg-zinc-800 text-zinc-300 ml-8"
+          ? "bg-accent mr-8"
+          : "bg-secondary-foreground text-zinc-300 ml-8"
       }`}
     >
       <p className="whitespace-pre-wrap">

@@ -166,7 +166,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header isExpanded={isExpanded} onReset={handleReset} />
 
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full p-4 gap-4">
@@ -176,7 +176,7 @@ export default function ChatInterface() {
               "flex flex-col items-center justify-center min-h-[80vh]"
             )}
           >
-            <h1 className="text-3xl font-semibold text-white mb-8">
+            <h1 className="text-3xl font-semibold mb-8">
               Hey Spencer, what can I help with?
             </h1>
             <ChatInput
@@ -187,7 +187,7 @@ export default function ChatInterface() {
               className="w-full mb-8"
             />
             <PillActionButtons onClick={handlePillClick} />
-            <p className="text-white mb-8 text-center whitespace-pre-wrap">
+            <p className="mb-8 text-center whitespace-pre-wrap">
               {homepageWelcome}
             </p>
           </div>
@@ -222,9 +222,9 @@ export default function ChatInterface() {
               ))}
               {isLoading && (
                 <div className="flex items-center space-x-1 animate-fade-in p-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.3s]"></div>
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce"></div>
+                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-2 h-2 rounded-full bg-primary animate-bounce"></div>
                 </div>
               )}
             </div>

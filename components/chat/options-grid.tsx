@@ -29,10 +29,10 @@ export function OptionsGrid({
     optionPackage;
 
   return (
-    <div className="mt-4 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
+    <div className="mt-4 p-4 bg-background rounded-lg border border-border">
       {displayConfig.location && (
         <>
-          <p className="text-zinc-300 mb-2">Where would you like to do this?</p>
+          <p className="mb-2">Where would you like to do this?</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {locationOptions.map(option => (
               <div key={option} className="flex items-center space-x-2">
@@ -54,7 +54,7 @@ export function OptionsGrid({
                 />
                 <label
                   htmlFor={`location-${option}`}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-zinc-200"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-7"
                 >
                   {option}
                 </label>
@@ -66,7 +66,7 @@ export function OptionsGrid({
       )}
       {displayConfig.groupSize && (
         <>
-          <p className="text-zinc-300 mb-2">How many people do you expect?</p>
+          <p className="mb-2">How many people do you expect?</p>
           <Input
             className="mb-2 max-w-20"
             type="number"
@@ -78,7 +78,7 @@ export function OptionsGrid({
       )}
       {displayConfig.options && (
         <>
-          <p className="text-zinc-300 mb-2">{optionsTitle}</p>
+          <p className="mb-2">{optionsTitle}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {options.map(option => (
               <div key={option} className="flex items-center space-x-2">
@@ -97,7 +97,7 @@ export function OptionsGrid({
                 />
                 <label
                   htmlFor={option}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-zinc-200"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   {option}
                 </label>
