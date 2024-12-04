@@ -22,13 +22,13 @@ export default function PillActionButtons({ onClick }: PillActionButtonsProps) {
       >
         Wellness activity with your team
       </Button>
-      <Button
+      {/* <Button
         variant="outline"
         className="rounded-full bg-transparent border-border hover:bg-accent-foreground hover:text-secondary"
         onClick={() => onClick("coach")}
       >
         Team building table topics
-      </Button>
+      </Button> */}
     </div>
   );
 }
